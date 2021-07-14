@@ -1,0 +1,54 @@
+反转链表
+
+反转一个链表
+示例：
+输入：1->2->3->4->5->NULL
+输出：5->4->3->2->1->NULL
+
+
+
+
+思路一：用三个指针反转
+NULL做头结点，再将上面的指针指向前一个结点，完成反转
+但会有个问题，例如将1的next指向NULL，就无法找到指向2的指针了，所以这里用的是三个指针。
+
+struct ListNode* reverseList(struct ListNode* head){
+if(head == NULL || head->next == NULL)
+{
+    return head;
+}
+struct ListNode*n1 = NULL , *n2 = head , *n3 = head->next;
+while(n2)
+{
+    //反转
+    n2->next = n1;
+
+    //迭代
+    n1= n2;
+    n2 = n3;
+    if(n3)
+    n3 = n3->next;
+}
+return n1;
+}
+
+
+
+
+思路二：头插（注意这里的头插不创建新结点）
+取原链表中的结点头插到新结点
+struct ListNode* reverseList(struct ListNode* head){
+     struct ListNode* cur = head;
+     struct ListNode* newHead = NULL;
+     while(cur)
+     {
+         struct ListNode* next = cur->next;
+         cur->next = newHead;
+         newHead = cur;
+         cur = next;
+     }
+     return newHead;
+}
+
+
+思路三：递归（还没想出来）
