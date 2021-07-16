@@ -51,4 +51,4 @@ struct ListNode* reverseList(struct ListNode* head){
 }
 
 
-思路三：递归（还没想出来）
+思路三：递归（还没想出来那）
