@@ -1,0 +1,33 @@
+输入一个链表，输出该链表中倒数第k个结点
+（找中间结点的变形）
+
+例如输入：1 2 3 4 5
+也是双指针的问题，让一个指针先走k步，然后两个指针再一起走（此时fast指针走到空）
+
+struct ListNode* FindKthToTail(struct ListNode* pListHead,int k){
+    struct ListNode* fast = pListHead , * slow = pListHead;
+    //fast指针先走k步
+    while(k--)
+    {
+        //此时说明k比链表的长度要长,且测试链表是否为空
+        if(fast == NULL)
+        {
+            return NULL;
+        }
+        fast = fast->next;
+    }
+    while(fast)
+    {
+        slow = slow->next;
+        fast = fast->next;
+    }
+    return slow;
+}
+
+测试情况：
+１、自测常规情况，可以过。
+２、打印一些标记值，不显示输出标记值。比如：段错误。
+３、思考一些极端情况场景测试用例。（例如空链表，指针越界访问等等）
+
+出问题了先看测试用例，进行分析，再不行的话就进行调试。
+力扣的环境会有测试用例，而牛客网有时候不会有测试用例，需要学会排除法＋极端场景猜测法。（一定要尝试牛客网，校招笔试一般都是牛客＋赛马网）
