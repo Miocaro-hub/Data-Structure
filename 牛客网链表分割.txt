@@ -34,6 +34,8 @@ struct ListNode* partition(ListNode* pHead , int x){
 
        //链接两个链表
        lessHead->next = greaterHead->next;
+       //关键  防止出现死循环
+       greaterTail->next = NULL;
 
        pHead = lessHead->next;
        free(lessHead);
