@@ -1,0 +1,73 @@
+题目描述：
+你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。如果两个链表没有交点，返回 null 。
+
+题目数据 保证 整个链式结构中不存在环。
+
+提示：
+
+listA 中节点数目为 m
+listB 中节点数目为 n
+0 <= m, n <= 3 * 104
+1 <= Node.val <= 105
+0 <= skipA <= m
+0 <= skipB <= n
+如果 listA 和 listB 没有交点，intersectVal 为 0
+如果 listA 和 listB 有交点，intersectVal == listA[skipA + 1] == listB[skipB + 1]
+ 
+
+1、判断两个链表是否相交
+判断结点的地址是否有相同的（不能比较值）--此方法虽然可以，但是时间复杂度会是O(M*N)（假设A链表有M个结点,B链表有N个结点）
+
+所以我们找规律，判断两个链表的尾指针是否相同。
+
+2、若相交，求交点
+首先先求出两个链表的长度，让长的链表先走两个链表长度只差的步数，再同时走，第一个相同的结点就是交点
+
+struct ListNode *getIntersectionNode(struct ListNode *headA, struct ListNode *headB) {
+    if(headA == NULL || headB == NULL)
+    {
+        return NULL;
+    }
+    struct ListNode* curA = headA , * curB = headB;
+    //首先判断是否相交
+    int lenA = 0 , lenB = 0;
+    while(curA->next)
+    {
+        curA = curA->next;
+        lenA++;
+    }
+    while(curB->next)
+    {
+        curB = curB->next;
+        lenB++;
+    }
+
+    if(curA != curB)
+    {
+        return NULL;
+    }
+
+    //长的链表先走差距步
+    struct ListNode *longList = headA , *shortList = headB;
+    if(lenB>lenA)
+    {
+        longList = headB;
+        shortList = headA;
+    }
+
+    //求绝对值
+    int gap = abs(lenB - lenA);
+
+    while(gap--)
+    {
+        longList = longList->next;
+    }
+    while(longList != shortList)
+    {
+        longList = longList->next;
+        shortList = shortList->next;
+    }
+    return longList;
+}
+
+也可以不判断是否相交，直接求完长度后长的链表走差距步，再同时走
