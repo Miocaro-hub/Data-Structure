@@ -1,0 +1,63 @@
+题目描述：
+在一个排序的链表中，存在重复的结点，请删除该链表中重复的结点，重复的结点不保留，返回链表头指针。例如，链表1->2->3->3->4->5处理后为1->2->5(重复的结点都删除，一个都不保留)
+
+思路：设计三个指针，prev，cur，next，prev作为前驱指针，保存上一个结点，cur和next指针同时走，如果他们指向结点的值相等，则next向后走，直到走到不相等的结点，删除中间的结点，同时将下一个结点赋给prev的next.
+
+极端情况：
+1、从头节点开始就是重复的结点.prev为空
+这种情况可以用一个头节点来解决
+
+2、后面的几个结点重复
+此时的next也走到了NULL，所以循环结束的条件应该是cur和next不相等或者next走到空.
+
+3、所有的结点都有重复，都需要删除
+
+代码：
+struct ListNode* deleteDuplication(struct ListNode* pHead){
+    if(pHead == NULL || pHead->next == NULL)
+    {
+        return pHead;
+    }
+    //起始条件
+    struct ListNode* prev = NULL , * cur = pHead , * next = pHead;
+    while(next)
+    {
+        if(cur->val == next->val)
+        {
+            //找到重复的结点
+            while(next && cur->val == next->val)  //next向后走
+            {
+                next = next->next;
+            }
+
+            //删除cur到next之间重复的结点
+            while(cur != next)
+            {
+                struct ListNode* del = cur;
+                cur = cur->next;
+                free(del);
+            }
+
+            if(prev == NULL)
+            {
+                prev = cur;
+            }
+            else
+            {
+                prev->next = cur;
+            }
+            if(next)
+            {
+                next = next->next;
+            }
+        }
+        else
+        {
+            //开始向后走
+            prev = cur;
+            cur = next;
+            next = next->next;
+        }
+    }
+    return pHead;
+}
